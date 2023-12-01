@@ -4,10 +4,14 @@ from django.conf.urls.static import static
 
 from .schema import schema_view
 
-urlpatterns = [
-    path(
-        "schema/",
-        schema_view.with_ui(),
-        name="schema",
-    ),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns = (
+    [
+        path(
+            "schema/",
+            schema_view.with_ui(),
+            name="schema",
+        ),
+    ]
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
