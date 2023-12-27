@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "drf_yasg",
+    "media",
 ]
 
 MIDDLEWARE = [
@@ -94,6 +95,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = "static/"
+
+MEDIA_URL = "files/"
+MEDIA_ROOT = "files/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
