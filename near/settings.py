@@ -21,7 +21,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "drf_yasg",
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
+    "tokens",
     "media",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -85,6 +89,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "users.User"
+
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -108,7 +114,18 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": [
         "djangorestframework_camel_case.parser.CamelCaseJSONParser",
     ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
     "JSON_UNDERSCOREIZE": {
         "no_underscore_before_number": True,
     },
+}
+
+SIMPLE_JWT = {
+    "UPDATE_LAST_LOGIN": True,
+    "AUTH_HEADER_TYPES": ["Token", "Bearer"],
 }

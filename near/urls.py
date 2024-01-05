@@ -13,6 +13,8 @@ router.register("media", MediaViewSet, basename="media")
 urlpatterns = (
     [
         path("", include(router.urls)),
+        path("tokens/", include("tokens.urls")),
+        path("users/", include("users.urls")),
         path(
             "schema/",
             schema_view.with_ui(),
