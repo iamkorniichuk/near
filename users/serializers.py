@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
 
@@ -8,18 +8,17 @@ from .models import User
 class UserCredentialsSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["email", "password", "tokens"]
+        fields = ["email", "password"]
         extra_kwargs = {
             "password": {"write_only": True},
         }
 
-    tokens = serializers.SerializerMethodField()
-
-    def get_tokens(self, user):
+    @classmethod
+    def get_tokens(cls, user):
         refresh = RefreshToken.for_user(user)
-        access = AccessToken.for_user(user)
-        data = {"refresh": str(refresh), "access": str(access)}
-        return data
+        access = refresh.access_token
+        tokens = {"refresh": str(refresh), "access": str(access)}
+        return tokens
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
