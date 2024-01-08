@@ -1,16 +1,33 @@
 from django.contrib.gis.db import models
-from django.core.mail import send_mail
-from django.conf import settings
+from django.db.models.lookups import GreaterThan
+from django.utils.timezone import now, timedelta
 import secrets
 
 from users.models import User
 
-
 random = secrets.SystemRandom()
 
 
-def generate_code():
-    return random.randint(1000, 9999)
+class VerifyEmailLetterManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .annotate(
+                is_expired=models.ExpressionWrapper(
+                    GreaterThan(
+                        lhs=now() - models.F("generated"), rhs=timedelta(days=1)
+                    ),
+                    output_field=models.BooleanField(),
+                )
+            )
+        )
+
+    def get(self, *args, **kwargs):
+        instance = super().get(*args, **kwargs)
+        if instance.is_expired:
+            instance.save()
+        return instance
 
 
 class VerifyEmailLetter(models.Model):
@@ -19,26 +36,14 @@ class VerifyEmailLetter(models.Model):
         models.CASCADE,
         related_name="verify_email_letter",
     )
-    sent = models.DateTimeField(auto_now=True)
-    code = models.IntegerField(default=generate_code, editable=False)
+    generated = models.DateTimeField(auto_now=True)
+    code = models.IntegerField(editable=False)
 
-    def send(self):
-        return send_mail(
-            "Confirmation",
-            str(self.code),
-            from_email=f"poriad <{settings.DEFAULT_FROM_EMAIL}>",
-            recipient_list=[self.user.email],
-            fail_silently=False,
-        )
+    objects = VerifyEmailLetterManager()
 
-    def verify_email(self, code, delete_letter=True):
-        is_verified = code == self.code
+    def save(self, *args, **kwargs):
+        self.code = self.generate_code()
+        return super().save(*args, **kwargs)
 
-        if is_verified:
-            self.user.is_email_verified = True
-            self.user.save()
-
-            if delete_letter:
-                self.delete()
-
-        return is_verified
+    def generate_code(self):
+        return random.randint(1000, 9999)
