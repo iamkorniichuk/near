@@ -1,5 +1,6 @@
 from pathlib import Path
 from environs import Env
+from django.utils.timezone import timedelta
 
 env = Env()
 env.read_env()
@@ -139,3 +140,4 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")
+VERIFY_EMAIL_CODE_LIFETIME = timedelta(days=1)

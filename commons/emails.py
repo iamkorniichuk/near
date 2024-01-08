@@ -4,6 +4,10 @@ from django.db.models.query import QuerySet
 
 
 class EmailLetterManager:
+    """
+    Compose and send an email letter from a model instance.
+    """
+
     def __init__(self, instance):
         self.instance = instance
 

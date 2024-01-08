@@ -1,9 +1,11 @@
 from django.contrib.gis.db import models
 from django.db.models.lookups import GreaterThan
-from django.utils.timezone import now, timedelta
+from django.utils.timezone import now
+from django.conf import settings
 import secrets
 
 from users.models import User
+
 
 random = secrets.SystemRandom()
 
@@ -16,7 +18,8 @@ class VerifyEmailLetterManager(models.Manager):
             .annotate(
                 is_expired=models.ExpressionWrapper(
                     GreaterThan(
-                        lhs=now() - models.F("generated"), rhs=timedelta(days=1)
+                        lhs=now() - models.F("generated"),
+                        rhs=settings.VERIFY_EMAIL_CODE_LIFETIME,
                     ),
                     output_field=models.BooleanField(),
                 )
@@ -31,6 +34,10 @@ class VerifyEmailLetterManager(models.Manager):
 
 
 class VerifyEmailLetter(models.Model):
+    """
+    To send email letters use a corresponding manager under `emails.managers` or create your own with `commons.emails.EmailManager`.
+    """
+
     user = models.OneToOneField(
         User,
         models.CASCADE,
