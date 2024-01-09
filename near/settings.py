@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "tokens",
     "media",
     "users",
+    "profiles",
     "emails",
 ]
 

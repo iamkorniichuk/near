@@ -6,5 +6,5 @@ app_name = "users"
 
 urlpatterns = [
     path("", UserCreateView.as_view(), name="create"),
-    path("<int:pk>/", UserDetailsView.as_view(), name="details"),
+    path("me/", UserDetailsView.as_view(), name="details"),
 ]
