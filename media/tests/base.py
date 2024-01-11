@@ -1,27 +1,18 @@
-import os
-from tempfile import TemporaryDirectory
-
 from django.urls import reverse
+from django.conf import settings
 from rest_framework.test import APITestCase
 
-from commons.settings import RestorableSettings
 from commons.files import FileManager
 
 
 class MediaFileTestCase(APITestCase):
     @classmethod
     def setUpClass(cls):
-        cls.temp_dir = TemporaryDirectory()
-        cls.conf = RestorableSettings(MEDIA_ROOT=cls.temp_dir.name)
-
-        dir_path = os.path.join(cls.conf["MEDIA_ROOT"], "test")
-        cls.dir = FileManager(dir_path, "rb")
+        cls.dir = FileManager(settings.SOURCE_MEDIA_ROOT, "rb")
         cls.dir.read_all()
 
     @classmethod
     def tearDownClass(cls):
-        cls.temp_dir.cleanup()
-        cls.conf.restore_all()
         cls.dir.close_all()
 
     def post_media(self, **kwargs):
