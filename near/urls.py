@@ -15,6 +15,7 @@ urlpatterns = (
         path("", include(router.urls)),
         path("tokens/", include("tokens.urls")),
         path("users/", include("users.urls")),
+        path("profiles/", include("profiles.urls")),
         path("emails/", include("emails.urls")),
         path(
             "schema/",
