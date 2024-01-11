@@ -1,7 +1,9 @@
 from rest_framework import generics
+from rest_framework import permissions
 
 from .serializers import ProfileSerializer
 from .models import Profile
+from .permissions import HasProfile
 
 
 class ProfileListView(generics.ListCreateAPIView):
@@ -12,10 +14,10 @@ class ProfileListView(generics.ListCreateAPIView):
         request.data["user"] = self.request.user.pk
         return super().create(request, *args, **kwargs)
 
-    def get_object(self):
-        user = self.request.user
-        self.check_object_permissions(self.request, user)
-        return user
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [permissions.AllowAny()]
+        return super().get_permissions()
 
 
 class ProfileDetailsView(generics.RetrieveAPIView):
@@ -26,8 +28,7 @@ class ProfileDetailsView(generics.RetrieveAPIView):
 class MyProfileDetailsView(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+    permission_classes = [HasProfile]
 
     def get_object(self):
-        user = self.request.user
-        self.check_object_permissions(self.request, user)
-        return user
+        return self.request.user.profile

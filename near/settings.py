@@ -121,7 +121,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "profiles.permissions.HasProfileOrReadOnly",
     ],
     "JSON_UNDERSCOREIZE": {
         "no_underscore_before_number": True,
