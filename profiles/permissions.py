@@ -1,12 +1,11 @@
-from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-class HasProfile(IsAuthenticated):
+class HasProfile(BasePermission):
+    message = {"profile": "Current user has no created profile."}
+
     def has_permission(self, request, view):
-        if super().has_permission(request, view):
-            self.message = {"profile": "Current user has no created profile."}
-            return hasattr(request.user, "profile")
-        return False
+        return hasattr(request.user, "profile")
 
 
 class HasProfileOrReadOnly(HasProfile):

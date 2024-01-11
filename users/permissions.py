@@ -1,12 +1,11 @@
-from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-class IsEmailVerified(IsAuthenticated):
+class IsEmailVerified(BasePermission):
+    message = {"email": "Current email is not verified."}
+
     def has_permission(self, request, view):
-        if super().has_permission(request, view):
-            self.message = {"email": "Current email is not verified."}
-            return request.user.is_email_verified
-        return False
+        return request.user.is_email_verified
 
 
 class IsEmailVerifiedOrReadOnly(IsEmailVerified):
