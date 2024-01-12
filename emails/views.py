@@ -16,7 +16,7 @@ class ConfirmCodeView(APIView):
         code = request.data["code"]
 
         letter = VerifyEmailLetter.objects.get(user=user)
-        if letter.verify_email(code):
+        if code == letter.code:
             return Response("Email is verified", status.HTTP_200_OK)
 
         return Response("Wrong code", status.HTTP_400_BAD_REQUEST)
