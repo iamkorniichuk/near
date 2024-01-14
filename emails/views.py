@@ -15,10 +15,16 @@ class ConfirmConfirmationCodeView(APIView):
         user = request.user
         code = request.data["code"]
 
-        letter = ConfirmationCode.objects.get(
-            user=user, type=ConfirmationCodeTypes.VERIFY_EMAIL
+        instance = ConfirmationCode.objects.get(
+            user=user,
+            type=ConfirmationCodeTypes.VERIFY_EMAIL,
         )
-        if code == letter.code:
+        if instance.is_expired:
+            return Response(
+                "Current code is expired. Generate a new one",
+                status.HTTP_400_BAD_REQUEST,
+            )
+        if instance.code == code:
             user.is_email_verified = True
             user.save()
             return Response("Email is verified", status.HTTP_200_OK)
