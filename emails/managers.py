@@ -1,16 +1,12 @@
 from django.conf import settings
 
-from commons.emails import EmailLetterManager, CreateEmailModelMixin
+from commons.emails import EmailSender
 
-from .models import VerifyEmailLetter
+from .models import ConfirmationCode
 
 
-class VerifyEmailLetterManager(CreateEmailModelMixin, EmailLetterManager):
-    queryset = VerifyEmailLetter.objects.all()
-
-    def create_instance(self, **data):
-        instance, created = self.get_queryset().get_or_create(**data)
-        return instance
+class ConfirmationCodeSender(EmailSender):
+    queryset = ConfirmationCode.objects.all()
 
     def get_subject(self):
         return "poriad: Email Verification"

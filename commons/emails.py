@@ -3,13 +3,19 @@ from django.db.models import Manager
 from django.db.models.query import QuerySet
 
 
-class EmailLetterManager:
+class EmailSender:
     """
-    Compose and send an email letter from a model instance.
+    Create model and send an email letter.
     """
 
-    def __init__(self, instance):
-        self.instance = instance
+    def __init__(self, **data):
+        self.instance = self.get_queryset().create(**data)
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if isinstance(queryset, (QuerySet, Manager)):
+            queryset = queryset.all()
+        return queryset
 
     def get_instance(self):
         return self.instance
@@ -43,20 +49,3 @@ class EmailLetterManager:
             html_message=html_message,
             fail_silently=False,
         )
-
-
-class CreateEmailModelMixin:
-    queryset = None
-
-    def __init__(self, **data):
-        super().__init__(self.create_instance(**data))
-
-    def create_instance(self, **data):
-        instance = self.get_queryset().create(**data)
-        return instance
-
-    def get_queryset(self):
-        queryset = self.queryset
-        if isinstance(queryset, (QuerySet, Manager)):
-            queryset = queryset.all()
-        return queryset

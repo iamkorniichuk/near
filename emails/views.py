@@ -4,10 +4,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
-from .models import VerifyEmailLetter
+from .models import ConfirmationCode, ConfirmationCodeTypes
 
 
-class ConfirmCodeView(APIView):
+class ConfirmConfirmationCodeView(APIView):
     parser_classes = [JSONParser]
     permission_classes = [IsAuthenticated]
 
@@ -15,8 +15,12 @@ class ConfirmCodeView(APIView):
         user = request.user
         code = request.data["code"]
 
-        letter = VerifyEmailLetter.objects.get(user=user)
+        letter = ConfirmationCode.objects.get(
+            user=user, type=ConfirmationCodeTypes.VERIFY_EMAIL
+        )
         if code == letter.code:
+            user.is_email_verified = True
+            user.save()
             return Response("Email is verified", status.HTTP_200_OK)
 
         return Response("Wrong code", status.HTTP_400_BAD_REQUEST)

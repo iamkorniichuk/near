@@ -6,6 +6,6 @@ class UsersConfig(AppConfig):
     name = "users"
 
     def ready(self):
-        from .handlers import send_verify_email_letter_on_create
+        from .handlers import send_confirmation_code_on_create
 
         return super().ready()
