@@ -3,9 +3,11 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
 import secrets
 
 from .models import ConfirmationCode, ConfirmationCodeTypes
+from .serializers import ConfirmationCodeSerializer
 from .permissions import HasUnverifiedEmail
 from . import send_mail
 
@@ -16,6 +18,10 @@ class VerifyEmailView(APIView):
     parser_classes = [JSONParser]
     permission_classes = [IsAuthenticated, HasUnverifiedEmail]
 
+    @swagger_auto_schema(
+        operation_description="Send confirmation code to authenticated user to verify an email.",
+        responses={200: "Verification letter was sent to your email.", 400: ""},
+    )
     def get(self, request):
         user = request.user
 
@@ -42,6 +48,15 @@ class VerifyEmailView(APIView):
         except ValueError as e:
             return Response(repr(e), status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(
+        operation_description="Verify authenticated user if `code` parameter equals to a sent confirmation code.",
+        request_body=ConfirmationCodeSerializer,
+        responses={
+            200: "Email is verified",
+            400: "Wrong code",
+            406: "Current code is expired. Generate a new one",
+        },
+    )
     def post(self, request):
         user = request.user
         code = request.data["code"]
@@ -53,7 +68,7 @@ class VerifyEmailView(APIView):
         if instance.is_expired:
             return Response(
                 "Current code is expired. Generate a new one",
-                status.HTTP_400_BAD_REQUEST,
+                status.HTTP_406_NOT_ACCEPTABLE,
             )
         if instance.code == code:
             user.is_email_verified = True
