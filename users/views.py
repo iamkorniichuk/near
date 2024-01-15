@@ -15,7 +15,7 @@ class UserDetailsView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
-    def get_object(self):
+    def get_object(self):  # TODO: Remove tokens on details view
         user = self.request.user
         self.check_object_permissions(self.request, user)
         return user
