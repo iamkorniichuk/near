@@ -1,9 +1,9 @@
 from django.urls import path
 
-from .views import ConfirmCodeView
+from .views import VerifyEmailView
 
 app_name = "emails"
 
 urlpatterns = [
-    path("confirm/", ConfirmCodeView.as_view(), name="confirm"),
+    path("verify-email/", VerifyEmailView.as_view(), name="verify-email"),
 ]
