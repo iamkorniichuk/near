@@ -4,6 +4,8 @@ from os import path
 
 from users.models import User
 
+from .validators import ImageRatioValidator
+
 DEFAULT_PICTURE = path.join(settings.DEFAULTS_MEDIA_URL, "profiles_picture")
 
 
@@ -13,6 +15,7 @@ class Profile(models.Model):
     picture = models.ImageField(
         upload_to="profiles/",
         default=DEFAULT_PICTURE,
+        validators=[ImageRatioValidator(1, 1)],
     )
 
     def __str__(self):
