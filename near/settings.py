@@ -1,4 +1,5 @@
 from pathlib import Path
+from os import path
 from environs import Env
 from django.utils.timezone import timedelta
 
@@ -107,6 +108,7 @@ STATIC_ROOT = "static/"
 
 MEDIA_URL = "files/"
 MEDIA_ROOT = "files/"
+DEFAULTS_MEDIA_URL = path.join(MEDIA_URL, "defaults/")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
