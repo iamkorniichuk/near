@@ -8,7 +8,10 @@ from .base import MediaFileTestCase
 
 class FileRemovalTestCase(MediaFileTestCase):
     def setUp(self):
-        self.media = Media.objects.create(file=File(self.dir["image.png"]))
+        self.media = Media.objects.create(
+            file=File(self.dir["image.png"]),
+            content_object=self.place,
+        )
         self.storage = self.media.file.storage
         self.old_file = self.media.file
 
@@ -26,6 +29,7 @@ class FileRemovalTestCase(MediaFileTestCase):
         self.patch_media(self.media.pk, file=file)
         self.assert_old_file_removal()
 
+    # TODO: True is not False -> commit --amend
     def test_file_removal_on_put(self):
         file = SimpleUploadedFile(
             "video.mp4", self.dir.contents["video.mp4"], "video/mp4"
