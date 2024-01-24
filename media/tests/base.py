@@ -6,6 +6,7 @@ from rest_framework.test import APITestCase
 from commons.files import FileManager
 from places.models import Place
 from users.models import User
+from profiles.models import Profile
 
 
 class MediaFileTestCase(APITestCase):
@@ -17,12 +18,18 @@ class MediaFileTestCase(APITestCase):
         cls.user, _ = User.objects.get_or_create(
             email="test@gmail.com", password="12345678"
         )
+        cls.profile, _ = Profile.objects.get_or_create(
+            {
+                "user": cls.user,
+                "name": "test",
+            }
+        )
         cls.place, _ = Place.objects.get_or_create(
             {
                 "name": "test",
                 "description": "test",
                 "location": Point(0, 0),
-                "user": cls.user,
+                "profile": cls.profile,
             }
         )
 
