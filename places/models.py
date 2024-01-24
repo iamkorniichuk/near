@@ -8,7 +8,7 @@ from media.models import Media
 class Place(models.Model):
     name = models.CharField(max_length=64)
     description = models.TextField()
-    location = models.PointField(srid=4326)
+    location = models.PointField(srid=4326, geography=True)
     profile = models.ForeignKey(Profile, models.CASCADE)
     media = GenericRelation(Media)
 
