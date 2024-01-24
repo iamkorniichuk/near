@@ -45,7 +45,6 @@ class MediaDetailsView(RetrieveUpdateDestroyAPIView, ContentObjectViewMixin):
     serializer_class = MediaSerializer
     queryset = Media.objects.all()
 
-    # TODO: rebase -i *to Replace...*
     def update(self, request, app_label, object_id, *args, **kwargs):
         request.data.update(self.get_content_object_data(app_label, object_id))
         return super().update(request, app_label, object_id, *args, **kwargs)

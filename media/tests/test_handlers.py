@@ -29,7 +29,6 @@ class FileRemovalTestCase(MediaFileTestCase):
         self.patch_media(self.media.pk, file=file)
         self.assert_old_file_removal()
 
-    # TODO: True is not False -> commit --amend
     def test_file_removal_on_put(self):
         file = SimpleUploadedFile(
             "video.mp4", self.dir.contents["video.mp4"], "video/mp4"
