@@ -5,21 +5,24 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('contenttypes', '0002_remove_content_type_name'),
-        ('media', '0002_media_content_type_media_object_id'),
+        ("contenttypes", "0002_remove_content_type_name"),
+        ("media", "0002_media_content_type_media_object_id"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='media',
-            name='content_type',
-            field=models.ForeignKey(limit_choices_to=models.Q(('app_label', 'places'), ('model', 'place')), on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype'),
+            model_name="media",
+            name="content_type",
+            field=models.ForeignKey(
+                limit_choices_to=models.Q(("app_label", "places"), ("model", "place")),
+                on_delete=django.db.models.deletion.CASCADE,
+                to="contenttypes.contenttype",
+            ),
         ),
         migrations.AlterField(
-            model_name='media',
-            name='object_id',
+            model_name="media",
+            name="object_id",
             field=models.PositiveIntegerField(),
         ),
     ]
