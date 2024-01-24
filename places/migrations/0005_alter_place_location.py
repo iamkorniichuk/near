@@ -5,15 +5,16 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('places', '0004_remove_place_user_alter_place_profile'),
+        ("places", "0004_remove_place_user_alter_place_profile"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='place',
-            name='location',
-            field=django.contrib.gis.db.models.fields.PointField(geography=True, srid=4326),
+            model_name="place",
+            name="location",
+            field=django.contrib.gis.db.models.fields.PointField(
+                geography=True, srid=4326
+            ),
         ),
     ]

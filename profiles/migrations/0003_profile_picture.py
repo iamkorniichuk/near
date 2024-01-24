@@ -5,15 +5,18 @@ import profiles.validators
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('profiles', '0002_auto_20240109_1539'),
+        ("profiles", "0002_auto_20240109_1539"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='picture',
-            field=models.ImageField(default='files/defaults/profiles_picture', upload_to='profiles/', validators=[profiles.validators.ImageRatioValidator(1, 1)]),
+            model_name="profile",
+            name="picture",
+            field=models.ImageField(
+                default="files/defaults/profiles_picture",
+                upload_to="profiles/",
+                validators=[profiles.validators.ImageRatioValidator(1, 1)],
+            ),
         ),
     ]
