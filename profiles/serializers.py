@@ -7,6 +7,3 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = "__all__"
-        extra_kwargs = {
-            "user": {"write_only": True},
-        }
