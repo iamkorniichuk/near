@@ -110,7 +110,6 @@ STATIC_ROOT = "static/"
 
 MEDIA_URL = "files/"
 MEDIA_ROOT = "files/"
-DEFAULTS_MEDIA_URL = path.join(MEDIA_URL, "defaults/")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -135,6 +134,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "UPDATE_LAST_LOGIN": True,
     "AUTH_HEADER_TYPES": ["Token", "Bearer"],
 }
