@@ -1,12 +1,11 @@
 from django.contrib.gis.db import models
-from django.conf import settings
 from os import path
 
 from users.models import User
 
 from .validators import ImageRatioValidator
 
-DEFAULT_PICTURE = path.join(settings.DEFAULTS_MEDIA_URL, "profiles_picture")
+DEFAULT_PICTURE = path.join("defaults", "profiles_picture.png")
 
 
 class Profile(models.Model):
