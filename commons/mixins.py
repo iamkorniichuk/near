@@ -3,7 +3,7 @@ from django.http import QueryDict
 
 class BasePopulateDataMixin:
     def update_request(self, request):
-        if isinstance(request.data, QueryDict):
+        if hasattr(request.data, "_mutable") and request.data._mutable is False:
             request.data._mutable = True
         request.data.update(self.get_populated_data())
         return request
