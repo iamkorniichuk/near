@@ -11,6 +11,10 @@ related_content_types = [
         "app_label": "places",
         "model": "place",
     },
+    {
+        "app_label": "events",
+        "model": "event",
+    },
 ]
 
 

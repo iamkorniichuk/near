@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "profiles",
     "emails",
     "places",
+    "events",
 ]
 
 MIDDLEWARE = [
