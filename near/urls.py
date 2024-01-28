@@ -4,11 +4,13 @@ from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 
 from places.viewsets import PlaceViewSet
+from events.viewsets import EventViewSet
 
 from .schema import schema_view
 
 router = DefaultRouter()
 router.register("places", PlaceViewSet, basename="place")
+router.register("events", EventViewSet, basename="event")
 
 urlpatterns = (
     [
