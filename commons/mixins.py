@@ -1,5 +1,3 @@
-
-
 class BasePopulateDataMixin:
     def update_request(self, request):
         if hasattr(request.data, "_mutable") and request.data._mutable is False:
