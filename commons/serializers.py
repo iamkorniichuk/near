@@ -2,6 +2,10 @@ from rest_framework import serializers
 
 
 class RepresentativePkRelatedField(serializers.PrimaryKeyRelatedField):
+    """
+    `PrimaryKeyRelatedField` with passed `serializer_class` representation.
+    """
+
     def __init__(self, serializer_class, **kwargs):
         self.serializer_class = serializer_class
         super().__init__(**kwargs)
