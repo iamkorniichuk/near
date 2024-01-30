@@ -2,11 +2,13 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.contenttypes.models import ContentType
 
+from commons.mixins import PopulateDataMixin
+
 from .serializers import MediaSerializer
 from .models import Media, related_content_types
 
 
-class ContentObjectViewMixin:
+class ContentObjectViewMixin(PopulateDataMixin):
     def filter_queryset(self, app_label, object_id):
         filters = self.get_content_type_filters(app_label)
         return self.queryset.filter(object_id=object_id, **filters).all()
@@ -25,8 +27,13 @@ class ContentObjectViewMixin:
             "object_id": object_id,
         }
 
+    def get_populated_data(self, *args, **kwargs):
+        app_label = kwargs["app_label"]
+        object_id = kwargs["object_id"]
+        return self.get_content_object_data(app_label, object_id)
 
-class MediaListView(ListCreateAPIView, ContentObjectViewMixin):
+
+class MediaListView(ContentObjectViewMixin, ListCreateAPIView):
     parser_classes = [MultiPartParser, FormParser]
     serializer_class = MediaSerializer
     queryset = Media.objects.all()
@@ -35,16 +42,8 @@ class MediaListView(ListCreateAPIView, ContentObjectViewMixin):
         self.queryset = self.filter_queryset(app_label, object_id)
         return super().list(request)
 
-    def create(self, request, app_label, object_id):
-        request.data.update(self.get_content_object_data(app_label, object_id))
-        return super().create(request)
 
-
-class MediaDetailsView(RetrieveUpdateDestroyAPIView, ContentObjectViewMixin):
+class MediaDetailsView(ContentObjectViewMixin, RetrieveUpdateDestroyAPIView):
     parser_classes = [MultiPartParser, FormParser]
     serializer_class = MediaSerializer
     queryset = Media.objects.all()
-
-    def update(self, request, app_label, object_id, *args, **kwargs):
-        request.data.update(self.get_content_object_data(app_label, object_id))
-        return super().update(request, app_label, object_id, *args, **kwargs)
