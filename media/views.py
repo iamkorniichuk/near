@@ -9,7 +9,7 @@ from .models import Media, related_content_types
 
 
 class ContentObjectViewMixin(PopulateDataMixin):
-    def filter_queryset(self, app_label, object_id):
+    def filter_queryset_by_content_object(self, app_label, object_id):
         filters = self.get_content_type_filters(app_label)
         return self.queryset.filter(object_id=object_id, **filters).all()
 
@@ -42,8 +42,9 @@ class MediaListView(ContentObjectViewMixin, ListCreateAPIView):
             return MultipleMediaSerializer
         return MediaSerializer
 
+    # TODO: To test on different endpoints in one run
     def list(self, request, app_label, object_id):
-        self.queryset = self.filter_queryset(app_label, object_id)
+        self.queryset = self.filter_queryset_by_content_object(app_label, object_id)
         return super().list(request)
 
 
