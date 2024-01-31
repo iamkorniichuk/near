@@ -19,6 +19,11 @@ related_content_types = [
 
 
 class Media(models.Model):
+    class Meta:
+        unique_together = [
+            ["content_type", "object_id", "order"],
+        ]
+
     file = models.FileField(
         upload_to="media/",
         validators=[
@@ -48,6 +53,7 @@ class Media(models.Model):
     )
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
+    order = models.PositiveSmallIntegerField()
 
     def __str__(self):
         return self.file.name

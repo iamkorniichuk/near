@@ -11,6 +11,7 @@ class FileRemovalTestCase(MediaFileTestCase):
         self.media = Media.objects.create(
             file=File(self.dir["image.png"]),
             content_object=self.place,
+            order=1,
         )
         self.storage = self.media.file.storage
         self.old_file = self.media.file
@@ -26,12 +27,12 @@ class FileRemovalTestCase(MediaFileTestCase):
         file = SimpleUploadedFile(
             "video.mp4", self.dir.contents["video.mp4"], "video/mp4"
         )
-        self.patch_media(self.media.pk, file=file)
+        self.patch_media(self.media.pk, file=file, order=self.media.order)
         self.assert_old_file_removal()
 
     def test_file_removal_on_put(self):
         file = SimpleUploadedFile(
             "video.mp4", self.dir.contents["video.mp4"], "video/mp4"
         )
-        self.put_media(self.media.pk, file=file)
+        self.put_media(self.media.pk, file=file, order=self.media.order)
         self.assert_old_file_removal()
