@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from commons.mixins import PopulateDataMixin
 
-from .serializers import MediaSerializer
+from .serializers import MediaSerializer, MultipleMediaSerializer
 from .models import Media, related_content_types
 
 
@@ -35,8 +35,12 @@ class ContentObjectViewMixin(PopulateDataMixin):
 
 class MediaListView(ContentObjectViewMixin, ListCreateAPIView):
     parser_classes = [MultiPartParser, FormParser]
-    serializer_class = MediaSerializer
     queryset = Media.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return MultipleMediaSerializer
+        return MediaSerializer
 
     def list(self, request, app_label, object_id):
         self.queryset = self.filter_queryset(app_label, object_id)
