@@ -38,3 +38,9 @@ class MultipleMediaSerializer(serializers.Serializer):
         for obj in data["files"]:
             result["files"].append(MediaSerializer().to_representation(obj))
         return result
+
+
+class SwaggerMultipleMediaSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    files = serializers.ListField(child=serializers.FileField())
+    model = serializers.CharField(write_only=True)
