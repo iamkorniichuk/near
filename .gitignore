@@ -1,7 +1,6 @@
 # Development-specific files
 db.sqlite3
-files/*
-!files/test/
+files/
 static/
 
 # Django
