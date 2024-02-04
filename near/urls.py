@@ -15,7 +15,7 @@ router.register("events", EventViewSet, basename="event")
 urlpatterns = (
     [
         path("", include(router.urls)),
-        path("<str:app_label>/<int:object_id>/media/", include("media.urls")),
+        path("media/", include("media.urls")),
         path("tokens/", include("tokens.urls")),
         path("users/", include("users.urls")),
         path("profiles/", include("profiles.urls")),

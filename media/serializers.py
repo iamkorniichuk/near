@@ -15,7 +15,7 @@ class MediaSerializer(serializers.ModelSerializer):
 
 class MultipleMediaSerializer(serializers.Serializer):
     files = serializers.ListField(child=serializers.FileField())
-    content_type = serializers.CharField(write_only=True)
+    content_type = serializers.IntegerField(write_only=True)
     object_id = serializers.IntegerField(write_only=True)
 
     def create(self, validated_data):
