@@ -34,5 +34,11 @@ class FileRemovalTestCase(MediaFileTestCase):
         file = SimpleUploadedFile(
             "video.mp4", self.dir.contents["video.mp4"], "video/mp4"
         )
-        self.put_media(self.media.pk, file=file, order=self.media.order)
+        self.put_media(
+            self.media.pk,
+            file=file,
+            order=self.media.order,
+            object_id=self.media.object_id,
+            model="place",
+        )
         self.assert_old_file_removal()

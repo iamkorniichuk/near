@@ -39,13 +39,7 @@ class MediaFileTestCase(APITestCase):
 
     def post_media(self, **data):
         return self.client.post(
-            reverse(
-                "media:list",
-                kwargs={
-                    "app_label": "places",
-                    "object_id": self.place.pk,
-                },
-            ),
+            reverse("media:list"),
             data,
         )
 
@@ -53,7 +47,7 @@ class MediaFileTestCase(APITestCase):
         return self.client.delete(
             reverse(
                 "media:details",
-                kwargs={"app_label": "places", "object_id": self.place.pk, "pk": pk},
+                kwargs={"pk": pk},
             )
         )
 
@@ -61,7 +55,7 @@ class MediaFileTestCase(APITestCase):
         return self.client.put(
             reverse(
                 "media:details",
-                kwargs={"app_label": "places", "object_id": self.place.pk, "pk": pk},
+                kwargs={"pk": pk},
             ),
             data,
             "multipart",
@@ -71,7 +65,7 @@ class MediaFileTestCase(APITestCase):
         return self.client.patch(
             reverse(
                 "media:details",
-                kwargs={"app_label": "places", "object_id": self.place.pk, "pk": pk},
+                kwargs={"pk": pk},
             ),
             data,
             "multipart",
