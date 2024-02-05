@@ -8,6 +8,7 @@ from events.viewsets import EventViewSet
 
 from .schema import schema_view
 
+
 router = DefaultRouter()
 router.register("places", PlaceViewSet, basename="place")
 router.register("events", EventViewSet, basename="event")
@@ -15,10 +16,12 @@ router.register("events", EventViewSet, basename="event")
 urlpatterns = (
     [
         path("", include(router.urls)),
-        path("<str:app_label>/<int:object_id>/media/", include("media.urls")),
+        path("media/", include("media.urls")),
         path("tokens/", include("tokens.urls")),
         path("users/", include("users.urls")),
         path("profiles/", include("profiles.urls")),
+        path("places/", include("places.urls")),
+        path("events/", include("events.urls")),
         path("emails/", include("emails.urls")),
         path(
             "schema/",
