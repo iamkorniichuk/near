@@ -1,4 +1,4 @@
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.contenttypes.models import ContentType
 from copy import copy
@@ -14,6 +14,10 @@ POST: events/13/media/ -> append multiple media with continuous `order` to this 
 DELETE: media/<pk>/ -> delete certain media shifting `order`
 PATCH: events/13/media/ -> change order of this model's media 
 """
+
+
+class MediaDeleteView(DestroyAPIView):
+    queryset = Media.objects.all()
 
 
 def media_create_view_factory(model):
