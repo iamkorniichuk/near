@@ -1,7 +1,5 @@
 from pathlib import Path
-from os import path
 from environs import Env
-from django.utils.timezone import timedelta
 
 env = Env()
 env.read_env()
@@ -22,17 +20,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "drf_yasg",
-    "rest_framework_simplejwt",
-    "rest_framework_simplejwt.token_blacklist",
-    "rest_framework_gis",
-    "tokens",
-    "media",
-    "users",
-    "profiles",
-    "emails",
-    "places",
-    "events",
 ]
 
 MIDDLEWARE = [
@@ -43,7 +30,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "djangorestframework_camel_case.middleware.CamelCaseMiddleWare",
 ]
 
 ROOT_URLCONF = "near.urls"
@@ -81,6 +67,9 @@ DATABASES = {
 GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH")
 GEOS_LIBRARY_PATH = env("GEOS_LIBRARY_PATH")
 
+# Password validation
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -96,7 +85,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "users.User"
+
+# Internationalization
+# https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
@@ -106,45 +97,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = "static/"
-STATIC_ROOT = "static/"
 
-MEDIA_URL = "files/"
-MEDIA_ROOT = "files/"
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+STATIC_URL = "static/"
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-REST_FRAMEWORK = {
-    "DEFAULT_RENDERER_CLASSES": [
-        "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
-    ],
-    "DEFAULT_PARSER_CLASSES": [
-        "djangorestframework_camel_case.parser.CamelCaseJSONParser",
-    ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
-        "profiles.permissions.HasProfileOrReadOnly",
-        "users.permissions.IsEmailVerifiedOrReadOnly",
-    ],
-    "JSON_UNDERSCOREIZE": {
-        "no_underscore_before_number": True,
-    },
-}
-
-SIMPLE_JWT = {
-    "UPDATE_LAST_LOGIN": True,
-    "AUTH_HEADER_TYPES": ["Token", "Bearer"],
-}
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
-EMAIL_PORT = env.int("EMAIL_PORT")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-
-DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")
-CONFIRMATION_CODE_LIFETIME = timedelta(days=1)
