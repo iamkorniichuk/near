@@ -1,22 +1,16 @@
-from rest_framework.generics import CreateAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.contenttypes.models import ContentType
-from copy import copy
 
-from commons.mixins import PopulateDataMixin
+from commons.mixins import PopulateCreateDataMixin, PopulateUpdateDataMixin
 
 from .serializers import MediaSerializer, MultipleMediaSerializer
 from .models import Media
 
 
-"""
-POST: events/13/media/ -> append multiple media with continuous `order` to this model
-DELETE: media/<pk>/ -> delete certain media shifting `order`
-PATCH: events/13/media/ -> change order of this model's media 
-"""
-
-
-class MediaDeleteView(DestroyAPIView):
+class MediaDetailsView(PopulateUpdateDataMixin, RetrieveUpdateDestroyAPIView):
+    parser_classes = [MultiPartParser, FormParser]
+    serializer_class = MediaSerializer
     queryset = Media.objects.all()
 
     def perform_destroy(self, instance):
@@ -32,6 +26,14 @@ class MediaDeleteView(DestroyAPIView):
             media.order -= 1
         queryset.bulk_update(next_media, ["order"])
 
+    def get_populated_data(self, *args, **kwargs):
+        instance = self.get_object()
+
+        return {
+            "content_type": instance.content_type.pk,
+            "object_id": instance.object_id,
+        }
+
 
 def media_create_view_factory(model):
     class MediaCreateView(GenericMediaCreateView):
@@ -40,7 +42,7 @@ def media_create_view_factory(model):
     return MediaCreateView
 
 
-class GenericMediaCreateView(PopulateDataMixin, CreateAPIView):
+class GenericMediaCreateView(PopulateCreateDataMixin, CreateAPIView):
     parser_classes = [MultiPartParser, FormParser]
     queryset = Media.objects.all()
     content_type_pk = None
@@ -51,5 +53,4 @@ class GenericMediaCreateView(PopulateDataMixin, CreateAPIView):
         return MediaSerializer
 
     def get_populated_data(self, pk):
-        print(ContentType.objects.get(pk=self.content_type_pk).model, pk)
         return {"content_type": self.content_type_pk, "object_id": pk}
