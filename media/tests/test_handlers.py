@@ -19,6 +19,20 @@ class FileRemovalTestCase(MediaFileTestCase):
     def assert_old_file_removal(self):
         self.assertFalse(self.storage.exists(self.old_file.name))
 
+    def test_file_removal_on_patch(self):
+        file = SimpleUploadedFile(
+            "video.mp4", self.dir.contents["video.mp4"], "video/mp4"
+        )
+        self.patch_media(self.media.pk, file=file)
+        self.assert_old_file_removal()
+
+    def test_file_removal_on_put(self):
+        file = SimpleUploadedFile(
+            "video.mp4", self.dir.contents["video.mp4"], "video/mp4"
+        )
+        self.put_media(self.media.pk, file=file, order=self.media.order)
+        self.assert_old_file_removal()
+
     def test_file_removal_on_delete(self):
         self.delete_place_media(self.media.pk)
         self.assert_old_file_removal()

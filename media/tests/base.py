@@ -48,10 +48,28 @@ class MediaFileTestCase(APITestCase):
             data,
         )
 
+    def put_media(self, pk, **data):
+        return self.client.put(
+            reverse(
+                "media:details",
+                kwargs={"pk": pk},
+            ),
+            data,
+        )
+
+    def patch_media(self, pk, **data):
+        return self.client.patch(
+            reverse(
+                "media:details",
+                kwargs={"pk": pk},
+            ),
+            data,
+        )
+
     def delete_place_media(self, pk):
         return self.client.delete(
             reverse(
-                "media:delete",
+                "media:details",
                 kwargs={"pk": pk},
             )
         )
