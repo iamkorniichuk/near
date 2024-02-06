@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models import Max
 
 from .models import Media
 
@@ -21,7 +22,14 @@ class MultipleMediaSerializer(serializers.Serializer):
     def create(self, validated_data):
         result = {"files": []}
         files = validated_data.pop("files")
-        for i, file in enumerate(files):
+        start_order = Media.objects.filter(**validated_data).aggregate(
+            max=Max("order")
+        )["max"]
+        if start_order is None:
+            start_order = 0
+        else:
+            start_order += 1
+        for i, file in enumerate(files, start_order):
             serializer = MediaSerializer(
                 data={
                     "file": file,

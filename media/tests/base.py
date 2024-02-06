@@ -37,42 +37,39 @@ class MediaFileTestCase(APITestCase):
     def tearDownClass(cls):
         cls.dir.close_all()
 
-    def post_media(self, **data):
+    def post_place_media(self, **data):
         return self.client.post(
             reverse(
-                "media:list",
+                "places:media",
                 kwargs={
-                    "app_label": "places",
-                    "object_id": self.place.pk,
+                    "pk": self.place.pk,
                 },
             ),
             data,
-        )
-
-    def delete_media(self, pk):
-        return self.client.delete(
-            reverse(
-                "media:details",
-                kwargs={"app_label": "places", "object_id": self.place.pk, "pk": pk},
-            )
         )
 
     def put_media(self, pk, **data):
         return self.client.put(
             reverse(
                 "media:details",
-                kwargs={"app_label": "places", "object_id": self.place.pk, "pk": pk},
+                kwargs={"pk": pk},
             ),
             data,
-            "multipart",
         )
 
     def patch_media(self, pk, **data):
         return self.client.patch(
             reverse(
                 "media:details",
-                kwargs={"app_label": "places", "object_id": self.place.pk, "pk": pk},
+                kwargs={"pk": pk},
             ),
             data,
-            "multipart",
+        )
+
+    def delete_place_media(self, pk):
+        return self.client.delete(
+            reverse(
+                "media:details",
+                kwargs={"pk": pk},
+            )
         )

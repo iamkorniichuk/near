@@ -26,7 +26,7 @@ class MimeTypeValidatorTestCase(MediaFileTestCase):
                 content_type="text/plain",
             ),
         ]
-        response = self.post_media(files=files)
+        response = self.post_place_media(files=files)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_invalid_mime_type(self):
@@ -43,5 +43,5 @@ class MimeTypeValidatorTestCase(MediaFileTestCase):
             ),
             SimpleUploadedFile("text", self.dir.contents["text.txt"], content_type=""),
         ]
-        response = self.post_media(files=files)
+        response = self.post_place_media(files=files)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
