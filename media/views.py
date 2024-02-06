@@ -19,6 +19,19 @@ PATCH: events/13/media/ -> change order of this model's media
 class MediaDeleteView(DestroyAPIView):
     queryset = Media.objects.all()
 
+    def perform_destroy(self, instance):
+        filters = {
+            "content_type": instance.content_type,
+            "object_id": instance.object_id,
+            "order__gt": instance.order,
+        }
+        instance.delete()
+        queryset = self.get_queryset()
+        next_media = queryset.filter(**filters).order_by("order").all()
+        for media in next_media:
+            media.order -= 1
+        queryset.bulk_update(next_media, ["order"])
+
 
 def media_create_view_factory(model):
     class MediaCreateView(GenericMediaCreateView):
