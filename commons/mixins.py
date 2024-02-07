@@ -1,11 +1,11 @@
 class BasePopulateDataMixin:
-    def update_request(self, request, *args, **kwargs):
+    def update_request(self, request):
         if hasattr(request.data, "_mutable") and request.data._mutable is False:
             request.data._mutable = True
-        request.data.update(self.get_populated_data(*args, **kwargs))
+        request.data.update(self.get_populated_data())
         return request
 
-    def get_populated_data(self, *args, **kwargs):
+    def get_populated_data(self):
         raise NotImplementedError()
 
 
@@ -17,7 +17,7 @@ class PopulateCreateDataMixin(BasePopulateDataMixin):
     """
 
     def create(self, request, *args, **kwargs):
-        request = self.update_request(request, *args, **kwargs)
+        request = self.update_request(request)
         return super().create(request, *args, **kwargs)
 
 
@@ -29,9 +29,7 @@ class PopulateUpdateDataMixin(BasePopulateDataMixin):
     """
 
     def update(self, request, *args, **kwargs):
-        url_kwargs = kwargs
-        url_kwargs.pop("partial")
-        request = self.update_request(request, *args, **url_kwargs)
+        request = self.update_request(request)
         return super().update(request, *args, **kwargs)
 
 

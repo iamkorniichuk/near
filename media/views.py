@@ -26,7 +26,7 @@ class MediaDetailsView(PopulateUpdateDataMixin, RetrieveUpdateDestroyAPIView):
             media.order -= 1
         queryset.bulk_update(next_media, ["order"])
 
-    def get_populated_data(self, *args, **kwargs):
+    def get_populated_data(self):
         instance = self.get_object()
 
         return {
@@ -52,5 +52,5 @@ class GenericMediaCreateView(PopulateCreateDataMixin, CreateAPIView):
             return MultipleMediaSerializer
         return MediaSerializer
 
-    def get_populated_data(self, pk):
-        return {"content_type": self.content_type_pk, "object_id": pk}
+    def get_populated_data(self):
+        return {"content_type": self.content_type_pk, "object_id": self.kwargs["pk"]}

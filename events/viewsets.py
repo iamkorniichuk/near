@@ -10,5 +10,5 @@ class EventViewSet(PopulateDataMixin, ModelViewSet):
     serializer_class = EventSerializer
     queryset = Event.objects.all()
 
-    def get_populated_data(self, pk):
+    def get_populated_data(self):
         return {"profile": self.request.user.profile.pk}
