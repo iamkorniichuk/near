@@ -29,7 +29,9 @@ class PopulateUpdateDataMixin(BasePopulateDataMixin):
     """
 
     def update(self, request, *args, **kwargs):
-        request = self.update_request(request, *args, **kwargs)
+        url_kwargs = kwargs
+        url_kwargs.pop("partial")
+        request = self.update_request(request, *args, **url_kwargs)
         return super().update(request, *args, **kwargs)
 
 

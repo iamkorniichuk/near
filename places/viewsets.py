@@ -10,5 +10,5 @@ class PlaceViewSet(PopulateDataMixin, ModelViewSet):
     serializer_class = PlaceSerializer
     queryset = Place.objects.all()
 
-    def get_populated_data(self):
+    def get_populated_data(self, pk):
         return {"profile": self.request.user.profile.pk}
