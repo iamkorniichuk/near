@@ -127,7 +127,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
         "profiles.permissions.HasProfileOrReadOnly",
-        "users.permissions.IsEmailVerifiedOrReadOnly",
+        "emails.permissions.IsEmailVerifiedOrReadOnly",
     ],
     "JSON_UNDERSCOREIZE": {
         "no_underscore_before_number": True,

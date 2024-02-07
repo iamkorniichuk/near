@@ -10,4 +10,4 @@ class HasProfile(BasePermission):
 
 class HasProfileOrReadOnly(HasProfile):
     def has_permission(self, request, view):
-        return super().has_permission(request, view) or request.method in SAFE_METHODS
+        return request.method in SAFE_METHODS or super().has_permission(request, view)
