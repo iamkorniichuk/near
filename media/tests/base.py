@@ -38,6 +38,7 @@ class MediaFileTestCase(APITestCase):
         cls.dir.close_all()
 
     def post_place_media(self, **data):
+        self.client.force_authenticate(self.user)
         return self.client.post(
             reverse(
                 "places:media",
@@ -49,6 +50,7 @@ class MediaFileTestCase(APITestCase):
         )
 
     def put_media(self, pk, **data):
+        self.client.force_authenticate(self.user)
         return self.client.put(
             reverse(
                 "media:details",
@@ -58,6 +60,7 @@ class MediaFileTestCase(APITestCase):
         )
 
     def patch_media(self, pk, **data):
+        self.client.force_authenticate(self.user)
         return self.client.patch(
             reverse(
                 "media:details",
@@ -67,6 +70,7 @@ class MediaFileTestCase(APITestCase):
         )
 
     def delete_place_media(self, pk):
+        self.client.force_authenticate(self.user)
         return self.client.delete(
             reverse(
                 "media:details",
