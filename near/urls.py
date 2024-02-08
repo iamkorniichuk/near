@@ -20,6 +20,7 @@ urlpatterns = (
         path("tokens/", include("tokens.urls")),
         path("users/", include("users.urls")),
         path("profiles/", include("profiles.urls")),
+        path("tickets/", include("tickets.urls")),
         path("places/", include("places.urls")),
         path("events/", include("events.urls")),
         path("emails/", include("emails.urls")),
