@@ -1,5 +1,4 @@
 from pathlib import Path
-from os import path
 from environs import Env
 from django.utils.timezone import timedelta
 
